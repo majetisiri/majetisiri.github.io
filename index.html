@@ -1,83 +1,241 @@
-<!DOCTYPE HTML>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<style>
-
-	#background {
-		width: 100%; 
-		height: 100%; 
-		position: fixed; 
-		left: 0px; 
-		top: 0px; 
-		z-index: -1; /* Ensure div tag stays behind content; -999 might work, too. */
-	}
-
-	.stretch {
-		width:100%;
-		height:100%;
-	}
-
-	header{
-		text-align: left;
-		font-family:"Zapf Chancery", cursive;
-		font-size:25px;
-		padding-left: 450px;
-	}
-	p#p01{
-		text-align: left;
-		font-family:"Zapf Chancery", cursive;
-		font-size:25px;
-		padding-left:450px;
-	}
-	p#p02{
-		text-align: right;
-		font-family:"Zapf Chancery", cursive;
-		font-size:30px;
-		font-weight:bold;
-		padding-right: 200px;
-	}
-	a:link    {color:black; background-color:transparent; text-decoration:none}
-	a:hover{color:red; background-color:transparent; text-decoration:underline}
-	
-	p#p03{
-		text-align: right;
-		font-family:"Zapf Chancery", cursive;
-		font-size:50px;
-		font-weight:bold;
-		padding-right:250px;
-	}
-	footer{
-		text-align: right;
-		font-weight: bold;
-		color:black;
-		padding-right:100px;
-	}
-
-</style>
 <html>
-	<body>
+    <head>
+        <title>Exploring Crime Rate in the U.S.</title>
+        <script type="text/javascript" src="js/html2canvas.js"></script>
+        <script type="text/javascript" src="js/glitch-lib.js"></script>
+        <script type="text/javascript" src="js/glitch-execute.js"></script>
+ <link rel="stylesheet" href="./buttons.css" />
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Pacifico:400' rel='stylesheet' type='text/css'>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  		<script type="text/javascript" src="js/jquery.flipping_text.js"></script>
+      <script src="leapmotion/leapcursor-with-dependencies.min.js?gestureColor=#6DCC44"></script>
+  <style>
+    html {
+      height: 100%;
+    }
+    body {
+      background: #212121;
+      padding: 0;
+      text-align: center;
+      font-family: 'open sans';
+      position: relative;
+      margin: 0;
+      height: 100%;
+    }
+    
+    .wrapper {
+    	height: auto !important;
+    	height: 100%;
+    	margin: 0 auto; 
+    	overflow: hidden;
+    }
+    
+    a {
+      text-decoration: none;
+    }
+    
+    
+    h1, h2 {
+      width: 100%;
+      float: left;
+    }
+    h1 {
+      margin-top: 80px;
+      font-size: 46px;
+      color: #555;
+      margin-bottom: 5px;
+    }
+    h2 {
+      color: #999;
+      font-weight: 100;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+    
+    .pointer {
+      color: #9b59b6;
+      font-family: 'Pacifico', cursive;
+      font-size: 30px;
+      margin-top: 15px;
+    }
+    pre {
+      margin: 80px auto;
+    }
+    pre code {
+      padding: 35px;
+      border-radius: 5px;
+      font-size: 15px;
+      background: rgba(0,0,0,0.1);
+      border: rgba(0,0,0,0.05) 5px solid;
+      max-width: 500px;
+    }
 
-		<div id="background">
-			<img src="background.jpg" class="stretch" alt="" />
-		</div>
+
+    .main {
+      float: left;
+      width: 100%;
+      margin: 0 auto;
+    }
+    
+    .main h1 {
+      padding:150px 50px;
+      float: left;
+      width: 100%;
+      font-size: 45px;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      font-weight: 100;
+      color: white;
+      margin: 0;
+    }
+    
+    .main > div {
+      padding:50px 50px;
+      float: left;
+      width: 100%;
+      font-size: 45px;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      font-weight: 100;
+      color: white;
+      margin: 0;
+    }
+   
+    .main .demo1 {
+      background: #780106;
+    }
+    .main .demo2 {
+      background: #e74c3c;
+    }
+    .main .demo3 {
+      background: #e67e22;
+    }
+    .main .demo4 {
+      background: #f1c40f;
+    }
+    .main .demo5 {
+      background: #34495e;
+    }
+    
+    .reload, .btn{
+      display: inline-block;
+      border: 4px solid #FFF;
+      border-radius: 5px;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      background: rgba(255,255,255, 0.75);
+      display: inline-block;
+      line-height: 100%;
+      padding: 0.7em;
+      text-decoration: none;
+      opacity: 0.7;
+      color: #555;
+      width: 100px;
+      line-height: 140%;
+      font-size: 17px;
+      font-family: open sans;
+      font-weight: bold;
+    }
+    .reload:hover, .btn:hover {
+      background: white;
+    }
+    .btn {
+      width: 200px;
+    }
+    .btns {
+      width: 230px;
+      margin: 50px auto;
+    }
+    .credit {
+      text-align: center;
+      color: #999;
+      padding: 10px;
+      margin: 40px 0 0 0;
+      background: rgba(255,255,255,0.25);
+      float: left;
+      width: 100%;
+    }
+    .credit a {
+      color: #555;
+      text-decoration: none;
+      font-weight: bold;
+    }
+.back-btn {
+      position: absolute;
+      top: 0;
+      left: 0;
+      text-align: center;
+      display: block;
+      padding: 7px;
+      width: 100%;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      background: rgba(0, 0, 0, 0.05);
+      font-weight: bold;
+      font-size: 13px;
+      color: #555;
+      -webkit-transition: all 200ms ease-out;
+      -moz-transition: all 200ms ease-out;
+      -o-transition: all 200ms ease-out;
+      transition: all 200ms ease-out;
+text-decoration: none;
+    }
+    .back-btn:hover {
+      color: black;
+      background: rgba(0, 0, 0, 0.1);
+    }
+    h3 {
+      margin-top: 0;
+    }
+    
+    h4 {
+      margin: 0;
+      margin-top: -50px;
+    }
 
 
-		<header>
-			<h1> &#10049 Hand Drawings <sup>&#10049 </sup> <h1>
-		</header>
-		<p id ="p01"> &#9758; by Srividya Majeti </p>
+}
 
-		<p id ="p02">
-			<a href="http://www.cs.odu.edu/~smajeti/website/home.html" >Home</a>
-			<a href="http://www.cs.odu.edu/~smajeti/website/Gallery.html"> Gallery </a>
-		</p>
+	</style>
+	<script>
+	  $(document).ready(function(){
+  	  $(".demo1 .intro").flipping_text({
+  	    tickerTime: 50,
+  	    tickerCount: 5,
+        customRandomChar: "!@#$%^&*"
+  	  });
+  	  
+		});
+		
+   
 
-		<p id ="p03"> EVERY  <font color="red">JOB </font> IS A <br> SELF-POTRAIT OF THE <br> <font color="red">PERSON</font> WHO DID IT. <BR> AUTOGRAPH YOUR <br> WORK WITH <font color="red"> EXCELLENCE. </p>
-			
-		<footer>
-			<p> © 2015 by Srividya Majeti.</p>
-		</footer>
 
-	</body>
+	</script>
+    </head>
+    <body>
+
+     <div class="buttons">
+      <a href='./page1/index3.html'  class='button'>NEXT</a>
+      </div>
+
+    <h1>Exploring Crime Rate in the U.S.</h1>
+    <h2>No Safety Zone</h2>
+    <p class="credit">Ilho Nam, Srividya Majeti</p>
+	  <div class="main">
+      <div class="demo1">
+	      <h3 class="intro">US stands 1st in crime. Why?</h3>
+        <h4 data-delay="2000" class="intro"></h4>
+      </div>
+	    
+    </div>
+
+  </div>
+
+   
+
+</body>
 </html>
