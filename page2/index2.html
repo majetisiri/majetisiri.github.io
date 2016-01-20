@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="Drag & Drop World Countries (if you can)">
+  <link href="./src/dragit.css" rel="stylesheet"/>
+  <script src="./lib/d3.v3.js"></script>
+  <script src="./src/dragit.js"></script>
+</head>
+<title></title>
+<style>
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin-left:40px;
+  font-weight: 200;
+  font-size: 14px;
+  background: #212121;
+    }
+
+html,body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+text {
+  cursor: default;
+}
+
+h1 {
+  font-weight: 400;
+}
+
+#chart {
+  height: 306px;
+}
+
+text {
+  font-size: 10px;
+  
+}
+
+.dot {
+  stroke: #FFFFFF;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #FFFFFF;
+  shape-rendering: crispEdges;
+}
+
+.label {
+  fill: #FFFFFF;
+}
+
+.year.label {
+  font: 500 96px "Helvetica Neue";
+  fill: #FFFFFF;
+}
+
+.country.label  {
+  font: 500 70px "Helvetica Neue";
+  fill: #FFFFFF;
+}
+.crime.label{
+ font: 500 35px "Helvetica Neue";
+  fill: #FFFFFF; 
+}
+
+.income.label{
+ font: 500 35px "Helvetica Neue";
+  fill: #FFFFFF; 
+}
+
+.year.label.active {
+  fill: #aaa;
+}
+
+circle.pointTrajectory {
+   pointer-events: none;
+   stroke: lightgray;
+   fill: black;
+   opacity: 0;
+}
+
+path.lineTrajectory {
+  stroke-width: 2;
+  stroke-opacity: .5;
+  stroke: white;
+  fill: none;
+  pointer-events: none;
+}
+
+.selected {
+  stroke-width: 4;
+}
+.tick line {
+  stroke: #FFFFFF;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+  stroke-dasharray: 5,5;
+}
+.axis{
+   fill: none;
+  stroke: #FFFFFF;
+  shape-rendering: crispEdges;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  margin: 18px 0;
+  width: 100%;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #3071a9;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -14px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #367ebd;
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #3071a9;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+input[type=range]::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #2a6495;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+input[type=range]::-ms-fill-upper {
+  background: #3071a9;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+input[type=range]::-ms-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #3071a9;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #367ebd;
+}
+
+#min-time{
+  color:#FFFFFF;
+}
+#max-time{
+  color:#FFFFFF;
+}
+
+</style>
+
+<h1></h1>
+
+<i></i></p>
+
+
+
+
+<div id="chart" style="margin:0px"></div>
+
+<span id="min-time">2000</span>
+<input type="range" name="points" min="0" max="12" step="1" value="1" id="slider-time" style="width:950px">
+<span id="max-time">2012</span>
+
+<br>
+
+<script>
+
+
+
+
+
+
+// Load the data.
+
+  // Various accessors that specify the four dimensions of data to visualize.
+function x(d) { return d.population; }
+function y(d) { return d.CrimeRate; }
+function radius(d) { return d.CrimeRate; }
+function color(d) { return d.region; }
+function key(d) { return d.name; }
+
+// Chart dimensions.
+var margin = {top: 19.5, right: 19.5, bottom: 19.5, left: 39.5},
+    width = 960 - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+// Various scales. These domains make assumptions of data, naturally.
+var xScale = d3.scale.log().domain([1e4, 1e8]).range([0, width]),
+    yScale = d3.scale.linear().domain([100, 4000]).range([height, 0]),
+    radiusScale = d3.scale.linear().domain([100, 2000]).range([1, 25]),
+    colorScale = d3.scale.category10();
+
+// The x & y axes.
+var xAxis = d3.svg.axis().orient("bottom").scale(xScale).ticks(8, d3.format(",d")),
+    yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+// Create the SVG container and set the origin.
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .attr("class", "gRoot")
+
+// Add the x-axis.
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+// Add the y-axis.
+svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis);
+
+// Add an x-axis label.
+svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height - 6)
+    .text("population");
+
+// Add a y-axis label.
+svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 6)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("Crime Rate");
+
+// Add the year label; the value is set on transition.
+var label = svg.append("text")
+    .attr("class", "year label")
+    .attr("text-anchor", "end")
+    .attr("y", height - 24)
+    .attr("x", width)
+    .text(2000);
+
+// Add the country label; the value is set on transition.
+var countrylabel = svg.append("text")
+    .attr("class", "country label")
+    .attr("text-anchor", "start")
+    .attr("y", 40)
+    .attr("x", 20)
+    .text(" ");
+
+var crimelabel = svg.append("text")
+    .attr("class", "crime label")
+    .attr("text-anchor", "start")
+    .attr("y", 70)
+    .attr("x", 20)
+    .text(" ");
+
+    var incomelabel = svg.append("text")
+    .attr("class", "income label")
+    .attr("text-anchor", "start")
+    .attr("y", 100)
+    .attr("x", 20)
+    .text(" ");
+
+
+
+
+var first_time = true;
+  d3.json("./data/newData.json", function(nations) {
+
+    // A bisector since many nation's data is sparsely-defined.
+    var bisect = d3.bisector(function(d) { return d[0]; });
+
+    // Add a dot per nation. Initialize the data at 2000, and set the colors.
+    var dot = svg.append("g")
+        .attr("class", "dots")
+      .selectAll(".dot")
+        .data(interpolateData(2000))
+      .enter().append("circle")
+        .attr("class", "dot")
+        .style("fill", function(d) { return colorScale(color(d)); })
+        .call(position)
+        .on("mousedow", function(d, i) {
+
+        })
+        .on("mouseup", function(d, i) {
+          dot.classed("selected", false);
+          d3.select(this).classed("selected", !d3.select(this).classed("selected"));
+          dragit.trajectory.display(d, i, "selected");
+
+          //TODO: test if has been dragged
+          // Look at the state machine history and find a drag event in it?
+
+        })
+        .on("mouseenter", function(d, i) {
+          clear_demo();
+          if(dragit.statemachine.current_state == "idle") {
+            dragit.trajectory.display(d, i)
+            dragit.utils.animateTrajectory(dragit.trajectory.display(d, i), dragit.time.current, 1000)
+             countrylabel.text(d.name);
+            crimelabel.text("CR: "+d.CrimeRate);
+
+            var prefix = d3.formatPrefix(d.population);
+            incomelabel.text("Population: "+prefix.scale(d.population).toFixed() +prefix.symbol);
+            dot.style("opacity", .4)
+            d3.select(this).style("opacity", 1)
+            d3.selectAll(".selected").style("opacity", 1)
+          }
+        })
+        .on("mouseleave", function(d, i) {
+
+          if(dragit.statemachine.current_state == "idle") {
+            countrylabel.text("");
+            crimelabel.text("");
+            incomelabel.text("");
+            dot.style("opacity", 1);
+          }
+
+          dragit.trajectory.remove(d, i);
+        })
+        .call(dragit.object.activate)
+
+    // Add a title.
+    dot.append("title")
+        .text(function(d) { return d.name; });
+
+    // Start a transition that interpolates the data based on year.
+    svg.transition()
+        .duration(30000)
+        .ease("linear")
+
+// draw legend
+  var legend = svg.selectAll(".legend")
+      .data(colorScale.domain())
+    .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(10," + (i+1) * 20 + ")"; });
+
+  // draw legend colored rectangles
+  legend.append("rect")
+      .attr("x", width - 18)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", colorScale);
+
+  // draw legend text
+  legend.append("text")
+      .attr("x", width - 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .style("font-size","12px")
+      .style("fill","white")
+      .text(function(d) {
+        return d;})
+
+    // Positions the dots based on data.
+    function position(dot) {
+      dot.attr("cx", function(d) { return xScale(x(d)); })
+         .attr("cy", function(d) { return yScale(y(d)); })
+         .attr("r", function(d) { return radiusScale(radius(d)); });
+    }
+
+    // Defines a sort order so that the smallest dots are drawn on top.
+    function order(a, b) {
+      return radius(b) - radius(a);
+    }
+
+    // Updates the display to show the specified year.
+    function displayYear(year) {
+
+      dot.data(interpolateData(year+dragit.time.min), key).call(position).sort(order);
+      label.text(dragit.time.min + Math.round(year));
+    }
+
+    // Interpolates the dataset for the given (fractional) year.
+    function interpolateData(year) {
+      return nations.map(function(d) {
+        return {
+          name: d.name,
+          region: d.region,
+          income: interpolateValues(d.income, year),
+          population: interpolateValues(d.population, year),
+          CrimeRate: interpolateValues(d.CrimeRate, year)
+        };
+      });
+    }
+
+    // Finds (and possibly interpolates) the value for the specified year.
+    function interpolateValues(values, year) {
+      var i = bisect.left(values, year, 0, values.length - 1),
+          a = values[i];
+      if (i > 0) {
+        var b = values[i - 1],
+            t = (year - a[0]) / (b[0] - a[0]);
+        return a[1] * (1 - t) + b[1] * t;
+      }
+      return a[1];
+    }
+
+    init();
+
+    function update(v, duration) {
+      displayYear(v)
+      //dragit.time.current = v || dragit.time.current;
+      //d3.select("#slider-time").property("value", dragit.time.current);
+    }
+
+    function init() {
+
+      dragit.init(".gRoot");
+
+      dragit.time = {min:2000, max:2013, step:1, current:2000}
+      dragit.data = d3.range(nations.length).map(function() { return Array(); })
+
+
+      for(var yy = 2000; yy<2013; yy++) {
+
+        interpolateData(yy).filter(function(d, i) {
+          dragit.data[i][yy-dragit.time.min] = [xScale(x(d)), yScale(y(d))];
+
+        })
+      }
+
+      dragit.evt.register("update", update);
+
+      d3.select("#slider-time").property("value", 0);
+
+      d3.select("#slider-time")
+        .on("mousemove", function() {
+          update(parseInt(this.value), 1000);
+
+          clear_demo();
+        })
+
+      var end_effect = function() {
+        countrylabel.text("");
+        crimelabel.text("");
+        incomelabel.text("");
+        dot.style("opacity", 1)
+      }
+
+      dragit.evt.register("dragend", end_effect)
+    }
+
+  function clear_demo() {
+    if(first_time) {
+       svg.transition().duration(0);
+      first_time = false;
+      window.clearInterval(demo_interval);
+      countrylabel.text("");
+      crimelabel.text("");
+      incomelabel.text("");
+      dragit.trajectory.removeAll();
+      d3.selectAll(".dot").style("opacity", 1)
+    }
+  }
+
+  
+var random_index = -1;
+  function play_demo() {
+
+    var ex_nations = ["Virginia", "DC","Maryland"];
+    var index_random_nation = null;
+    //var random_index = Math.floor(Math.random() * ex_nations.length);
+
+
+    random_index++;
+    if(ex_nations.length <= random_index){
+
+        return;
+    }
+    var random_nation = nations.filter(function(d, i) {
+      if(d.name == ex_nations[random_index]) {
+        index_random_nation = i;
+        return true;
+      }
+    })[0];
+
+    var random_nation = nations[index_random_nation];
+
+    dragit.trajectory.removeAll();
+    dragit.trajectory.display(random_nation, index_random_nation);
+    countrylabel.text(random_nation.name);
+
+    dragit.utils.animateTrajectory(dragit.lineTrajectory, dragit.time.min, 2000)
+
+    d3.selectAll(".dot").style("opacity", .4)
+
+    d3.selectAll(".dot").filter(function(d) {
+      return d.name == random_nation.name;
+    }).style("opacity", 1)
+  }
+
+  var demo_interval = null;
+
+  setTimeout(function() {
+    if(first_time) {
+      play_demo()
+      demo_interval = setInterval(play_demo, 3000)
+    }
+  }, 1000);
+
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

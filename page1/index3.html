@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<head>
+   <title>Exploring Crime Rate in the U.S.</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/buttons.css" />
+  <link rel="stylesheet" href="./lib/d3.slider.css" />
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+     <script src="../leapmotion/leapcursor-with-dependencies.min.js?gestureColor=#6DCC44"></script>
+  <style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin-left:40px;
+  font-weight: 200;
+  font-size: 14px;
+  background: #212121;
+    }
+    #month{
+  color:#FFFFFF;
+}
+#date{
+  color:#FFFFFF;
+}
+#legend{
+ color:#FFFFFF; 
+}
+h3{ 
+
+  color: white;
+  margin-left: 20px;}
+    </style>
+
+</head>
+<body>
+  <div id="container">
+    <h3>Overall U.S Crime Rate </h3>
+    
+    <p id="intro"></p>
+    <div id="date">
+      <p></p>
+      <p id="month"></p>
+    </div>
+    <div id="play"></div>
+    <div id="slider-container">
+      <div id="slider-div"></div>
+      <div id="slider-probe">
+        <p></p>
+        <div></div>
+      </div>
+    </div>
+    <div id="map-container"></div>
+    <p id="source"></p>
+  </div>
+  <script src="./lib/d3.v3.min.js"></script>
+  <script src="./lib/topojson.v1.min.js"></script>
+  <script src="./lib/d3.slider.js"></script>
+  <script src="./js/main.js"></script>
+
+   <div class="buttons">
+      <a href='../page2/test.html'  class='button'>NEXT</a>
+      </div>
+
+</body>
+</html>
